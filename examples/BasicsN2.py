@@ -1,7 +1,7 @@
 import numpy as np
 import sys
 sys.path.append('G:/My Drive/Documents/Python3/MyPackages/splinefit')
-import splinefit as mvs
+import splinefit as sf
 from matplotlib import pyplot as plt
 
 
@@ -35,7 +35,7 @@ deriv_orders = np.array([2, 2])
 
 # Make model. Result is best estimate model, and the estimated variance of the
 # model estimation
-Model, ModelVar = mvs.model_from_data(X_fit, Y_fit, border_loc, poly_orders, deriv_orders)
+Model, ModelVar = sf.model_from_data(X_fit, Y_fit, border_loc, poly_orders, deriv_orders)
 
 
 # Plotting results
