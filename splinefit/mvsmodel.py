@@ -7,14 +7,34 @@ class MVSModel:
         self.params = params
 
 
-    def evalSingle(self, vertex_c):
-        #return Y
-        pass
+    def evalSingle(self, x_point):
+        """
+        Same function as 'MVSModel.eval', but accepts a single point.
+
+        :param vertices_c: (1D numpy array) The dependent variable point.
+        :returns: (float) calculated dependent variable value.
+        """
+        if x_point.ndim != 1:
+            raise ValueError("'point_c' should be a 1D numpy array")
+        x_point = x_point.reshape(1,-1)
+        y_point = self.eval(x_point)[0]
+        return y_point
 
     def eval(self, x_points):
+        """
+        Evaluates the simplex spline at independent variable points x_points. 
+        For vertices outside the spline domain np.NaN is returned
+
+        :param x_points: (2D numpy array) The dependent variable points. The
+            0th axis should contain the different vertices, and the 1st axis 
+            the different entries of each point.
+        :returns: (1D numpy array) calculated dependent variable values.
+        """
+        if x_points.shape[1] != self.PolyMIS.dim:
+            raise ValueError('Given points and spline model differ in dimension.')
         bins_with_labels = self.Grid.classify(x_points)
 
-        cube_dimensions = self.Grid.get_cube_dimensions()
+        cube_dimensions = self.Grid.get_cube_measurements()
         cube_roots = self.Grid.get_cube_roots()
 
         y_points = np.empty(x_points.shape[0])

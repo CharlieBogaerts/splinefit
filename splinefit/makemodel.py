@@ -1,9 +1,8 @@
 
 import numpy as np
-import mvsplines.grid as grd
-import mvsplines.multiindexset as mis
-import mvsplines.mvsmodel as mvsm
-
+import splinefit.grid as grd
+import splinefit.multiindexset as mis
+import splinefit.mvsmodel as mvsm
 
 
 
@@ -20,7 +19,7 @@ def model_from_data(x_data, y_data, border_loc, poly_orders, deriv_orders):
 
 def make_regression_mats(Grid, PolyMIS, x_points, y_points):
     bins_with_labels = Grid.classify(x_points)
-    cube_dimensions = Grid.get_cube_dimensions()
+    cube_dimensions = Grid.get_cube_measurements()
     cube_roots = Grid.get_cube_roots()
     Asub_list = []
     bsub_list = []
