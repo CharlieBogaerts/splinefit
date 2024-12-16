@@ -1,6 +1,12 @@
 import numpy as np
 
 class MVSModel:
+    """
+    Multi variate spline model. This class contains the grid structure, the 
+    polynomials that are used for each hyper cube (which are the same), and the
+    parameters corresponding to all terms making up the spline. These 
+    parameters are the result of a least squares estimation.
+    """
     def __init__(self, params, Grid, PolyMIS):
         self.PolyMIS = PolyMIS
         self.Grid = Grid
