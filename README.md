@@ -16,6 +16,6 @@ Only uses numpy and itertools
 ## Available user functions
 See docstrings for info.
 
-model_from_data(X_fit, Y_fit, border_loc, poly_orders, deriv_orders)
-MVSModel.evalSingle(self, x_point)
-MVSModel.eval(self, x_points)
+- model_from_data(X_fit, Y_fit, border_loc, poly_orders, deriv_orders)
+- MVSModel.evalSingle(self, x_point)
+- MVSModel.eval(self, x_points)
