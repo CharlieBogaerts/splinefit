@@ -21,9 +21,8 @@ R = X1_flat**2 + X2_flat**2
 Y_fit = np.sin(10*R)/R
 
 # Set up model with four hyper cubes (squares in this case, since 2D), with 
-# x0 borders at -1, .5, ,1 and x1 borders at -1,-.5, 0, .5, 1. (dont need to be
-# equidistant)
-border_loc = [[-1, .5 ,1],[-1,-.5, 0, .5, 1]] 
+# x0 borders at -1, -.3, .3 ,1 and x1 borders at -1,-.5, 0, .5, 1. 
+border_loc = [[-1, -.3, .3 ,1],[-1,-.5, 0, .5, 1]] 
 
 # define polynomial with terms along x0 of up to (but not including) order 3 
 # so max is x0^3,  and along x1 up to order 3, so max x1^2. The highest order
@@ -56,21 +55,24 @@ Y_model_mesh = Y_model.reshape(X1_mesh.shape)
 Y_model_std_mesh = np.sqrt(Y_model_var.reshape(X1_mesh.shape))
 
 if True:
-    fig, ax = plt.subplots(1, 2, subplot_kw={'projection': '3d'})
+    fig, ax = plt.subplots(1, 3, subplot_kw={'projection': '3d'})
 
     # First subplot (ax[0])
     ax[0].scatter(X_fit[:, 0], X_fit[:, 1], Y_fit, c='orange')
-    ax[0].plot_surface(X1_mesh, X2_mesh, Y_model_mesh)
     ax[0].set_xlabel('X1')
     ax[0].set_ylabel('X2')
     ax[0].set_zlabel('Y')
 
-
-    # Second subplot (ax[1])
-    ax[1].plot_surface(X1_mesh, X2_mesh, Y_model_std_mesh)
+    ax[1].plot_surface(X1_mesh, X2_mesh, Y_model_mesh)
     ax[1].set_xlabel('X1')
     ax[1].set_ylabel('X2')
-    ax[1].set_zlabel('Y_std')
+    ax[1].set_zlabel('Y')
+
+
+    ax[2].plot_surface(X1_mesh, X2_mesh, Y_model_std_mesh)
+    ax[2].set_xlabel('X1')
+    ax[2].set_ylabel('X2')
+    ax[2].set_zlabel('Y_std')
 
     # Show the plot
     plt.show()
