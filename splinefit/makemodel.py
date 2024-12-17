@@ -7,6 +7,30 @@ import splinefit.mvsmodel as mvsm
 
 
 def model_from_data(x_data, y_data, border_loc, poly_orders, deriv_orders):
+        """
+        Make a spline model from data. 
+
+        :x_data (2D numpy array) An NxM matrix containing N independent 
+            variable points of dimension M.
+        :y_data (1D numpy array) An array of length N containing N dependent 
+            variable values.
+        :border_loc (2D list) A list containing the locations of the borders of 
+            the grid, includding outer edges. The first list dimension is bound 
+            to the different dimensions, and the second dimension to the 
+            different border positions along that dimenion.
+        :poly_order (1D numpy array) Array containing the mononomial order in 
+            each dimension. Value of 0 means no means no function, value of 1 
+            means constant value, value of 2 means x^1, value of 2 means x^2, 
+            etc. Eg, poly_order = np.array([2, 4, 2]) means polynomial will be 
+            constructed using all mononomials upto and including x0^1 x1^3 x2^2
+        :deriv_orders (1D numpy array) Array containing the orders of 
+            continuity along each dimension. Eg, poly_order = np.array([2, 4])
+            means that along the 0th dimension the polynomials intersect, and
+            along first dimension continuity is enforced upto and including the
+            3'rd derivative
+        :returns: Two MVSModels, one with the estimated model, and one with the
+            estimated model variance.
+        """
         Grid = grd.Grid(border_loc)
         PolyMIS =  mis.MultiIndexSet(poly_orders)
         A, b = make_regression_mats(Grid, PolyMIS, x_data, y_data)
@@ -18,6 +42,10 @@ def model_from_data(x_data, y_data, border_loc, poly_orders, deriv_orders):
         return ParameterModel, VarianceModel
 
 def make_regression_mats(Grid, PolyMIS, x_points, y_points):
+    """
+    Make A matrix and b vector needed for the constrained LS estimation.
+    estimation
+    """
     bins_with_labels = Grid.classify(x_points)
     cube_dimensions = Grid.get_cube_measurements()
     cube_roots = Grid.get_cube_roots()
@@ -40,6 +68,9 @@ def make_regression_mats(Grid, PolyMIS, x_points, y_points):
 
 
 def make_continuity_mat(Grid, PolyMIS, deriv_orders):
+    """
+    Make H matrix with constraints, needed for the constrained LS estimation.
+    """
     H_sub_list = []
     for dim_nr in range(Grid.dim):
         c0_tuples = get_first_c0_tuples(Grid, dim_nr)
@@ -119,6 +150,9 @@ def get_fill_in_factors(terms, dim, value):
 
 
 def ECLQS(A, b, H):
+    """
+    Equality constrained least squares 
+    """
     n_A, m_A = A.shape
     n_H, m_H = H.shape
     M1 = np.block([[A.T@A, H.T],
@@ -130,6 +164,11 @@ def ECLQS(A, b, H):
     return params_aug[:m_A], C1
 
 def calc_variance_params(covars, PolyMIS, Grid):
+    """
+    Calculate the parameters of the variance model based on the covariance
+    matrix that is the result of the parameter estimation. The resulting 
+    variance spline is of higher order than the estimation spline,
+    """
     polies =  PolyMIS.matrix
     n =  PolyMIS.length
     new_mis_mat = np.zeros((int(n**2),  PolyMIS.dim), dtype = int)

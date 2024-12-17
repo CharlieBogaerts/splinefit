@@ -21,7 +21,7 @@ class MultiIndexSet:
         Find the i'th multi index (mi) of the mis matrix.
 
         :param i: (int) The row of the multi index.
-        :returns: (1D numpy array) The multi index
+        :returns: (1D numpy array) The multi index.
         """
         return self.matrix[i,:]
 
@@ -29,7 +29,7 @@ class MultiIndexSet:
         """
         Find the row number in the matrix of given multi index.
 
-        :param multi_index: (1D numpy array) The multi index
+        :param multi_index: (1D numpy array) The multi index.
         :returns: (int) The row of the multi index.
         """
         bool_matrix = np.zeros((self.length, self.dim), dtype = bool)
@@ -45,7 +45,7 @@ class MultiIndexSet:
         """
         Find the row number in the matrix of given multi index.
 
-        :param multi_index: (2D numpy array) The multi indices
+        :param multi_index: (2D numpy array) The multi indices.
         :returns: (1D numpy array) The indices of the rows the multi indices are at.
         """
         n, dim = multi_indices.shape
